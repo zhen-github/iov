@@ -2,7 +2,127 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.jeecg.modules.iov.mapper.CarStatusMapper">
 
-    <delete id="delByCarId" >
-     delete from iov_car_status where car_id=#{carId}
+
+	<select id="list" resultType="org.jeecg.modules.iov.entity.CarStatus">
+		SELECT
+		a.id as id,
+		a.create_by as createBy,
+		a.create_time  as createTime,
+		a.update_by as updateBy,
+		a.update_time as updateTime,
+		a.sys_org_code as sysOrgCode,
+		a.car_id as "car.id",
+		a.status as status,
+		a.speed as  speed,
+		a.rotation as  rotation,
+		a.acceleration as acceleration,
+		a.inclination as inclination,
+		a.idling  as idling,
+		a.coolant_temperature as coolantTemperature,
+		a.onflow_temperature as onflowTemperature,
+		a.engine_oil_temperature as engineOilTemperature,
+		a.latitude as  latitude,
+		a.longitude as longitude,
+		a.breakdown as breakdown,
+		a.catalyzer_tem_one_one as catalyzerTemOneOne,
+		a.catalyzer_tem_two_one as catalyzerTemTwoOne,
+		a.catalyzer_tem_one_two as catalyzerTemOneTwo,
+		a.catalyzer_tem_two_two as catalyzerTemTwoTwo,
+		a.osv_one_one as osvOneOne,
+		a.osv_one_two as osvOneTwo,
+		a.osv_one_there as osvOneThere,
+		a.osv_one_four as osvOneFour,
+		a.osv_two_one as osvTwoOne,
+		a.osv_two_two as osvTwoTwo,
+		a.osv_two_there as osvTwoThere,
+		a.osv_two_four as osvTwoFour,
+		a.stfc_one as stfcOne,
+		a.ltfc_one as ltfcOne,
+		a.stfc_two as stfcTwo,
+		a.ltfc_two as ltfcTwo,
+		b.car_number as "car.carNumber"
+		FROM iov_car_status a LEFT JOIN iov_car b on a.car_id=b.id
+	</select>
+
+    <insert id="add">
+
+        INSERT INTO iov_car_status(
+			id,
+			create_by,
+			create_time,
+			update_by,
+			update_time,
+			sys_org_code,
+            car_id,
+            status,
+            speed,
+            rotation,
+            acceleration,
+            inclination,
+            idling,
+            coolant_temperature,
+            onflow_temperature,
+            engine_oil_temperature,
+            latitude,
+            longitude,
+            breakdown,
+            catalyzer_tem_one_one,
+            catalyzer_tem_two_one,
+            catalyzer_tem_one_two,
+            catalyzer_tem_two_two,
+            osv_one_one,
+            osv_one_two,
+            osv_one_there,
+            osv_one_four,
+            osv_two_one,
+            osv_two_two,
+            osv_two_there,
+            osv_two_four,
+            stfc_one,
+            ltfc_one,
+            stfc_two,
+            ltfc_two
+		) VALUES (
+			#{id},
+			#{createBy},
+			#{createTime},
+			#{updateBy},
+			#{updateTime},
+			#{sysOrgCode},
+			#{car.id},
+			#{status},
+			#{speed},
+			#{rotation},
+			#{acceleration},
+			#{inclination},
+			#{idling},
+			#{coolantTemperature},
+			#{onflowTemperature},
+			#{engineOilTemperature},
+			#{latitude},
+			#{longitude},
+			#{breakdown},
+			#{catalyzerTemOneOne},
+			#{catalyzerTemTwoOne},
+			#{catalyzerTemOneTwo},
+			#{catalyzerTemTwoTwo},
+			#{osvOneOne},
+			#{osvOneTwo},
+			#{osvOneThere},
+			#{osvOneFour},
+			#{osvTwoOne},
+			#{osvTwoTwo},
+			#{osvTwoThere},
+			#{osvTwoFour},
+			#{stfcOne},
+			#{ltfcOne},
+			#{stfcTwo},
+			#{ltfcTwo}
+		)
+    </insert>
+
+
+    <delete id="delByCar" >
+     delete from iov_car_status where car_id=#{car.id}
     </delete>
 </mapper>

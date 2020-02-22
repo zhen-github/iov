@@ -48,7 +48,7 @@ public class CarStatus implements Serializable {
     private java.lang.String sysOrgCode;
 	/**车牌号*/
 	@Excel(name = "车牌号", width = 15)
-    private java.lang.String carId;
+    private Car car;
 	/**状态*/
 	@Excel(name = "状态", width = 15)
     private java.lang.Integer status;

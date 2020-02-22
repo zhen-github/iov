@@ -1,5 +1,7 @@
 package org.jeecg.modules.iov.service;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.jeecg.modules.iov.entity.CarStatus;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -10,6 +12,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @Version: V1.0
  */
 public interface ICarStatusService extends IService<CarStatus> {
+    void add(CarStatus carStatus);
+    void delByCar(CarStatus carStatus);
 
-    void delByCarId(CarStatus carStatus);
+    IPage<CarStatus> list(IPage<CarStatus> page, Wrapper<CarStatus> queryWrapper);
 }

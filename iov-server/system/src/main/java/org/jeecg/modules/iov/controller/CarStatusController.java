@@ -62,7 +62,7 @@ public class CarStatusController extends JeecgController<CarStatus, ICarStatusSe
 								   HttpServletRequest req) {
 		QueryWrapper<CarStatus> queryWrapper = QueryGenerator.initQueryWrapper(carStatus, req.getParameterMap());
 		Page<CarStatus> page = new Page<CarStatus>(pageNo, pageSize);
-		IPage<CarStatus> pageList = carStatusService.page(page, queryWrapper);
+		IPage<CarStatus> pageList = carStatusService.list(page, queryWrapper);
 		return Result.ok(pageList);
 	}
 	

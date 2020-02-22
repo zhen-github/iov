@@ -84,8 +84,8 @@ public class CarController extends JeecgController<Car, ICarService> {
 	public Result<?> add(@RequestBody Car car) {
 		carService.save(car);
 		CarStatus carStatus=new CarStatus();
-		carStatus.setCarId(car.getId());
-		carStatusService.save(carStatus);
+		carStatus.setCar(car);
+		carStatusService.add(carStatus);
 		return Result.ok("添加成功！");
 	}
 	
@@ -112,8 +112,10 @@ public class CarController extends JeecgController<Car, ICarService> {
 	public Result<?> delete(@RequestParam(name="id",required=true) String id) {
 		carService.removeById(id);
 		CarStatus carStatus=new CarStatus();
-		carStatus.setCarId(id);
-		carStatusService.delByCarId(carStatus);
+		Car car=new Car();
+		car.setId(id);
+		carStatus.setCar(car);
+		carStatusService.delByCar(carStatus);
 		return Result.ok("删除成功!");
 	}
 	
