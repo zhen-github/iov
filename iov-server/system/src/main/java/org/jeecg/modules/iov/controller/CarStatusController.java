@@ -9,8 +9,12 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.api.vo.Result;
+import org.jeecg.common.aspect.annotation.PermissionData;
 import org.jeecg.common.system.query.QueryGenerator;
+import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.modules.iov.entity.CarStatus;
 import org.jeecg.modules.iov.service.ICarStatusService;
@@ -62,7 +66,8 @@ public class CarStatusController extends JeecgController<CarStatus, ICarStatusSe
 								   HttpServletRequest req) {
 		QueryWrapper<CarStatus> queryWrapper = QueryGenerator.initQueryWrapper(carStatus, req.getParameterMap());
 		Page<CarStatus> page = new Page<CarStatus>(pageNo, pageSize);
-		IPage<CarStatus> pageList = carStatusService.list(page, queryWrapper);
+		LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+		IPage<CarStatus> pageList = carStatusService.list(page, queryWrapper,sysUser.getUsername());
 		return Result.ok(pageList);
 	}
 	

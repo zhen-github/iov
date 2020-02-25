@@ -8,6 +8,7 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,9 @@ import org.springframework.stereotype.Component;
 public class NettyServer  implements CommandLineRunner {
     @Value("${netty.port}")
     private int port;
+
+    @Autowired
+    private NettyDataEngine nettyDataEngine;
 
     public void start() {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
@@ -26,7 +30,7 @@ public class NettyServer  implements CommandLineRunner {
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     public void initChannel(SocketChannel socketChannel) throws Exception {
-                        socketChannel.pipeline().addLast(new NettyHandle());
+                        socketChannel.pipeline().addLast(new NettyHandle(nettyDataEngine));
                     }
                 });
         try {

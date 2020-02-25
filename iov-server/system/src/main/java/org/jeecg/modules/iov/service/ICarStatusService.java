@@ -14,6 +14,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface ICarStatusService extends IService<CarStatus> {
     void add(CarStatus carStatus);
     void delByCar(CarStatus carStatus);
-
-    IPage<CarStatus> list(IPage<CarStatus> page, Wrapper<CarStatus> queryWrapper);
+    void updateStatus(CarStatus carStatus);
+    IPage<CarStatus> list(IPage<CarStatus> page, Wrapper<CarStatus> queryWrapper,String userId);
+    void  inactive(String mac);
 }

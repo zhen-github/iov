@@ -42,6 +42,8 @@
 		a.ltfc_two as ltfcTwo,
 		b.car_number as "car.carNumber"
 		FROM iov_car_status a LEFT JOIN iov_car b on a.car_id=b.id
+		WHERE a.create_by=#{userId}
+		ORDER BY a.create_time DESC
 	</select>
 
     <insert id="add">
@@ -121,6 +123,50 @@
 		)
     </insert>
 
+	<update id="updateStatus">
+		update iov_car_status
+		set
+			status=#{status},
+			update_time=#{updateTime},
+            speed=#{speed}<if test="rotation!=null">,
+            rotation=#{rotation},
+            acceleration=#{acceleration},
+            inclination=#{inclination},
+            idling=#{idling},
+            coolant_temperature=#{coolantTemperature},
+            onflow_temperature=#{onflowTemperature},
+            engine_oil_temperature=#{engineOilTemperature},
+            latitude=#{latitude},
+            longitude=#{longitude},
+            breakdown=#{breakdown},
+            catalyzer_tem_one_one=#{catalyzerTemOneOne},
+            catalyzer_tem_two_one=#{catalyzerTemTwoOne},
+            catalyzer_tem_one_two=#{catalyzerTemOneTwo},
+            catalyzer_tem_two_two=#{catalyzerTemTwoTwo},
+            osv_one_one=#{osvOneOne},
+            osv_one_two=#{osvOneTwo},
+            osv_one_there=#{osvOneThere},
+            osv_one_four#{osvOneFour},
+            osv_two_one=#{osvTwoOne},
+            osv_two_two=#{osvTwoTwo},
+            osv_two_there=#{osvTwoThere},
+            osv_two_four=#{osvTwoFour},
+            stfc_one=#{stfcOne},
+            ltfc_one=#{ltfcOne},
+            stfc_two=#{stfcTwo},
+            ltfc_two=#{ltfcTwo}
+	</if>
+            where
+				car_id=(SELECT id FROM iov_car WHERE mac=#{car.mac});
+	</update>
+
+	<update id="inactive">
+		update iov_car_status
+		set
+			status=0
+		where
+			car_id=(SELECT id FROM iov_car WHERE mac=#{mac});
+	</update>
 
     <delete id="delByCar" >
      delete from iov_car_status where car_id=#{car.id}
