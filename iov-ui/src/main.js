@@ -15,6 +15,7 @@ import '@/utils/filter' // base filter
 import Print from 'vue-print-nb-jeecg'
 /*import '@babel/polyfill'*/
 import VueApexCharts from 'vue-apexcharts'
+import BaiduMap from 'vue-baidu-map'
 
 import preview from 'vue-photo-preview'
 import 'vue-photo-preview/dist/skin.css'
@@ -54,6 +55,9 @@ Vue.component('apexchart', VueApexCharts)
 Vue.use(preview)
 Vue.use(vueBus);
 Vue.use(JeecgComponents);
+Vue.use(BaiduMap, {
+  ak: '37oIq6L3sjYbSUU5GvFnIEgnanm8a4i3'
+});
 
 new Vue({
   router,

@@ -22,10 +22,7 @@
 
     <!-- table区域-begin -->
     <div>
-      <div class="ant-alert ant-alert-info" style="margin-bottom: 16px;">
-        <i class="anticon anticon-info-circle ant-alert-icon"></i> 已选择 <a style="font-weight: 600">{{ selectedRowKeys.length }}</a>项
-        <a style="margin-left: 24px" @click="onClearSelected">清空</a>
-      </div>
+
 
       <a-table
         ref="table"
@@ -61,7 +58,7 @@
         </template>
 
         <span slot="action" slot-scope="text, record">
-          <a @click="handleEdit(record)">编辑</a>
+          <a @click="mapShow(record)">编辑</a>
 
           <a-divider type="vertical" />
           <a-dropdown>
@@ -78,7 +75,7 @@
 
       </a-table>
     </div>
-
+    <map-modal ref="map"></map-modal>
     <carStatus-modal ref="modalForm" @ok="modalFormOk"></carStatus-modal>
   </a-card>
 </template>
@@ -87,11 +84,13 @@
 
   import { JeecgListMixin } from '@/mixins/JeecgListMixin'
   import CarStatusModal from './modules/CarStatusModal'
+  import MapModal from './modules/MapModal'
 
   export default {
     name: "CarStatusList",
     mixins:[JeecgListMixin],
     components: {
+      MapModal,
       CarStatusModal
     },
     data () {
@@ -278,6 +277,9 @@
       }
     },
     methods: {
+      mapShow(record){
+          this.$refs.map.mapShow(record)
+      },
       initDictConfig(){
       }
        
