@@ -1,25 +1,8 @@
 <template>
   <a-card :bordered="false">
     <!-- 查询区域 -->
-    <div class="table-page-search-wrapper">
-      <a-form layout="inline" @keyup.enter.native="searchQuery">
-        <a-row :gutter="24">
-
-        </a-row>
-      </a-form>
-    </div>
     <!-- 查询区域-END -->
-    
     <!-- 操作按钮区域 -->
-    <div class="table-operator">
-      <a-dropdown v-if="selectedRowKeys.length > 0">
-        <a-menu slot="overlay">
-          <a-menu-item key="1" @click="batchDel"><a-icon type="delete"/>删除</a-menu-item>
-        </a-menu>
-        <a-button style="margin-left: 8px"> 批量操作 <a-icon type="down" /></a-button>
-      </a-dropdown>
-    </div>
-
     <!-- table区域-begin -->
     <div>
 
@@ -33,48 +16,31 @@
         :dataSource="dataSource"
         :pagination="ipagination"
         :loading="loading"
-        :rowSelection="{fixed:true,selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
-        
         @change="handleTableChange">
 
-        <template slot="htmlSlot" slot-scope="text">
-          <div v-html="text"></div>
-        </template>
-        <template slot="imgSlot" slot-scope="text">
-          <span v-if="!text" style="font-size: 12px;font-style: italic;">无此图片</span>
-          <img v-else :src="getImgView(text)" height="25px" alt="图片不存在" style="max-width:80px;font-size: 12px;font-style: italic;"/>
-        </template>
-        <template slot="fileSlot" slot-scope="text">
-          <span v-if="!text" style="font-size: 12px;font-style: italic;">无此文件</span>
-          <a-button
-            v-else
-            :ghost="true"
-            type="primary"
-            icon="download"
-            size="small"
-            @click="uploadFile(text)">
-            下载
-          </a-button>
-        </template>
+        <template  slot="status" slot-scope="text, record">
+          <span v-if="record.status==1" style="color:#00e41c">在线</span>
+          <span v-else style="color:#f22d0e" >离线</span>
+        </template >
+        <template  slot="breakdown" slot-scope="text, record">
 
-        <span slot="action" slot-scope="text, record">
-          <a @click="mapShow(record)">编辑</a>
+          <a-button  @click="breakdownShow(record)"  type="primary">查看</a-button>
+        </template >
 
-          <a-divider type="vertical" />
-          <a-dropdown>
-            <a class="ant-dropdown-link">更多 <a-icon type="down" /></a>
-            <a-menu slot="overlay">
-              <a-menu-item>
-                <a-popconfirm title="确定删除吗?" @confirm="() => handleDelete(record.id)">
-                  <a>删除</a>
-                </a-popconfirm>
-              </a-menu-item>
-            </a-menu>
-          </a-dropdown>
-        </span>
+        <template  slot="engine" slot-scope="text, record">
+          <a-button @click="engineShow(record)"  type="primary">查看</a-button>
+        </template >
+
+        <template  slot="location" slot-scope="text, record">
+          <a-button @click="mapShow(record)"  type="primary">查看</a-button>
+        </template >
+
+
 
       </a-table>
     </div>
+    <car-breakdown-modal ref="breakdown"></car-breakdown-modal>
+    <engine-modal ref="engine"></engine-modal>
     <map-modal ref="map"></map-modal>
     <carStatus-modal ref="modalForm" @ok="modalFormOk"></carStatus-modal>
   </a-card>
@@ -85,11 +51,15 @@
   import { JeecgListMixin } from '@/mixins/JeecgListMixin'
   import CarStatusModal from './modules/CarStatusModal'
   import MapModal from './modules/MapModal'
+  import EngineModal from './modules/EngineModal'
+  import CarBreakdownModal from './modules/CarBreakdownModal'
 
   export default {
     name: "CarStatusList",
     mixins:[JeecgListMixin],
     components: {
+      CarBreakdownModal,
+      EngineModal,
       MapModal,
       CarStatusModal
     },
@@ -99,16 +69,6 @@
         // 表头
         columns: [
           {
-            title: '#',
-            dataIndex: '',
-            key:'rowIndex',
-            width:60,
-            align:"center",
-            customRender:function (t,r,index) {
-              return parseInt(index)+1;
-            }
-          },
-          {
             title:'车牌号',
             align:"center",
             dataIndex: 'car.carNumber'
@@ -116,7 +76,8 @@
           {
             title:'状态',
             align:"center",
-            dataIndex: 'status'
+            dataIndex: 'status',
+            scopedSlots: { customRender: 'status' }
           },
           {
             title:'车速',
@@ -159,105 +120,22 @@
             dataIndex: 'engineOilTemperature'
           },
           {
-            title:'纬度',
-            align:"center",
-            dataIndex: 'latitude'
-          },
-          {
-            title:'经度',
-            align:"center",
-            dataIndex: 'longitude'
-          },
-          {
             title:'故障',
             align:"center",
-            dataIndex: 'breakdown'
+            dataIndex: 'breakdown',
+            scopedSlots: { customRender: 'breakdown' }
           },
           {
-            title:'催化剂温度(缸组1,传感器1) ',
+            title:'发动机详情',
             align:"center",
-            dataIndex: 'catalyzerTemOneOne'
+            dataIndex: 'engine',
+            scopedSlots: { customRender: 'engine' }
           },
           {
-            title:'催化剂温度(缸组2,传感器1) ',
+            title:'定位',
             align:"center",
-            dataIndex: 'catalyzerTemTwoOne'
-          },
-          {
-            title:'催化剂温度(缸组1,传感器2) ',
-            align:"center",
-            dataIndex: 'catalyzerTemOneTwo'
-          },
-          {
-            title:'催化剂温度(缸组2,传感器2) ',
-            align:"center",
-            dataIndex: 'catalyzerTemTwoTwo'
-          },
-          {
-            title:'氧传感器电压(缸组1,传感器1)',
-            align:"center",
-            dataIndex: 'osvOneOne'
-          },
-          {
-            title:'氧传感器电压(缸组1,传感器2)',
-            align:"center",
-            dataIndex: 'osvOneTwo'
-          },
-          {
-            title:'氧传感器电压(缸组1,传感器3)',
-            align:"center",
-            dataIndex: 'osvOneThere'
-          },
-          {
-            title:'氧传感器电压(缸组1,传感器4)',
-            align:"center",
-            dataIndex: 'osvOneFour'
-          },
-          {
-            title:'氧传感器电压(缸组2,传感器1)',
-            align:"center",
-            dataIndex: 'osvTwoOne'
-          },
-          {
-            title:'氧传感器电压(缸组2,传感器2)',
-            align:"center",
-            dataIndex: 'osvTwoTwo'
-          },
-          {
-            title:'氧传感器电压(缸组2,传感器3)',
-            align:"center",
-            dataIndex: 'osvTwoThere'
-          },
-          {
-            title:'氧传感器电压(缸组2,传感器4)',
-            align:"center",
-            dataIndex: 'osvTwoFour'
-          },
-          {
-            title:'短期燃油修正(缸组1) ',
-            align:"center",
-            dataIndex: 'stfcOne'
-          },
-          {
-            title:'长期燃油修正(缸组1)',
-            align:"center",
-            dataIndex: 'ltfcOne'
-          },
-          {
-            title:'短期燃油修正(缸组2)',
-            align:"center",
-            dataIndex: 'stfcTwo'
-          },
-          {
-            title:'长期燃油修正(缸组2)',
-            align:"center",
-            dataIndex: 'ltfcTwo'
-          },
-          {
-            title: '操作',
-            dataIndex: 'action',
-            align:"center",
-            scopedSlots: { customRender: 'action' }
+            dataIndex: 'location',
+            scopedSlots: { customRender: 'location' }
           }
         ],
         url: {
@@ -279,6 +157,12 @@
     methods: {
       mapShow(record){
           this.$refs.map.mapShow(record)
+      },
+      engineShow(record){
+        this.$refs.engine.engineShow(record)
+      },
+      breakdownShow(record){
+        this.$refs.breakdown.breakdownShow(record.breakdown);
       },
       initDictConfig(){
       }

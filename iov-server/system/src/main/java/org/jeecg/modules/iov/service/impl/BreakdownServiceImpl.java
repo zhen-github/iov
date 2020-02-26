@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
+import java.util.List;
+
 /**
  * @Description: 故障码
  * @Author: jeecg-boot
@@ -16,4 +18,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 @Service
 public class BreakdownServiceImpl extends ServiceImpl<BreakdownMapper, Breakdown> implements IBreakdownService {
 
+    @Override
+    public List<Breakdown> listByCode(String breakdownCodes) {
+        return super.baseMapper.listByCode(breakdownCodes);
+    }
 }

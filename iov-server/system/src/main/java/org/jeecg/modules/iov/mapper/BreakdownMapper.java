@@ -14,4 +14,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface BreakdownMapper extends BaseMapper<Breakdown> {
 
+    public List<Breakdown> listByCode(@Param("breakdownCodes")String breakdownCodes);
 }

@@ -26,7 +26,9 @@ import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.jeecgframework.poi.excel.entity.ImportParams;
 import org.jeecgframework.poi.excel.view.JeecgEntityExcelView;
 import org.jeecg.common.system.base.controller.JeecgController;
+import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -65,7 +67,11 @@ public class BreakdownController extends JeecgController<Breakdown, IBreakdownSe
 		IPage<Breakdown> pageList = breakdownService.page(page, queryWrapper);
 		return Result.ok(pageList);
 	}
-	
+
+	@RequestMapping("/listByCode")
+	public  Result<?> listByCode(String breakdownCodes){
+		return Result.ok(breakdownService.listByCode(breakdownCodes));
+	}
 	/**
 	 *   添加
 	 *

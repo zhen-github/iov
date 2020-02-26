@@ -28,7 +28,7 @@
         width: 800,
         visible: false,
         map:{
-          center: {lng: 121.4472540000, lat: 31.3236200000},
+          center: {lng: 0, lat: 0},
           zoom: 15
         },
       }
@@ -38,6 +38,7 @@
         this.map.center.lng=121;
         this.map.center.lat=20;
         this.visible=true;
+        console.log(record.speed);
       },
       mapCancel() {
         this.visible=false;
