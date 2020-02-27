@@ -35,10 +35,9 @@
     },
     methods: {
       mapShow(record) {
-        this.map.center.lng=121;
-        this.map.center.lat=20;
+        this.map.center.lng=record.longitude;
+        this.map.center.lat=record.latitude;
         this.visible=true;
-        console.log(record.speed);
       },
       mapCancel() {
         this.visible=false;

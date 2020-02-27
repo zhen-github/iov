@@ -20,6 +20,6 @@ public class BreakdownServiceImpl extends ServiceImpl<BreakdownMapper, Breakdown
 
     @Override
     public List<Breakdown> listByCode(String breakdownCodes) {
-        return super.baseMapper.listByCode(breakdownCodes);
+        return super.baseMapper.listByCode(breakdownCodes.split(","));
     }
 }

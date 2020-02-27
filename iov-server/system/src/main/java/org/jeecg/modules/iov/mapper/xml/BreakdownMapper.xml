@@ -7,7 +7,10 @@
         breakdown_code AS "breakdownCode",
         mean AS "mean"
         FROM iov_breakdown
-        WHERE breakdown_code in (#{breakdownCodes})
+        WHERE breakdown_code in
+        <foreach collection="breakdownCodes" item="code" index="index" open="(" close=")" separator=",">
+            #{code}
+        </foreach>
     </select>
 
 </mapper>

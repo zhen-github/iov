@@ -23,8 +23,8 @@
           <span v-else style="color:#f22d0e" >离线</span>
         </template >
         <template  slot="breakdown" slot-scope="text, record">
-
-          <a-button  @click="breakdownShow(record)"  type="primary">查看</a-button>
+          <span v-if="record.breakdown==null" style="color:#00e41c">正常</span>
+          <a-button v-else @click="breakdownShow(record)"  type="primary">查看</a-button>
         </template >
 
         <template  slot="engine" slot-scope="text, record">

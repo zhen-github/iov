@@ -7,9 +7,15 @@
     @cancel="breakdownCancel"
     :destroyOnClose="true"
   >
-    <div>
-
-    </div>
+    <a-list itemLayout="horizontal" :dataSource="breakdownData">
+      <a-list-item slot="renderItem" slot-scope="item">
+        <a-list-item-meta
+          :description="item.mean"
+        >
+          <a slot="title">错误代码：{{item.breakdownCode}}</a>
+        </a-list-item-meta>
+      </a-list-item>
+    </a-list>
   </a-modal>
 </template>
 
@@ -28,7 +34,8 @@
         url: "/iov/breakdown/listByCode",
         parameter: {
           breakdownCodes: "",
-        }
+        },
+        breakdownData:[]
       }
     },
     methods: {
@@ -37,7 +44,8 @@
         this.parameter.breakdownCodes=breakdownCodes;
         getAction(this.url,filterObj(this.parameter)).then((res) => {
           if (res.success) {
-            console.log(res.result.records) ;
+            this.breakdownData=res.result;
+            console.log(res.result) ;
           }
           if(res.code===510){
             this.$message.warning(res.message)
@@ -45,6 +53,7 @@
         })
       },
       breakdownCancel() {
+        this.breakdownData=[];
         this.visible=false;
       }
     }
