@@ -268,7 +268,7 @@ public class JeecgDemoController extends JeecgController<JeecgDemo, IJeecgDemoSe
                                          HttpServletRequest req) {
         QueryWrapper<JeecgDemo> queryWrapper = new QueryWrapper<JeecgDemo>();
         //编程方式，给queryWrapper装载数据权限规则
-        QueryGenerator.installAuthMplus(queryWrapper, JeecgDemo.class);
+        QueryGenerator.installAuthMplus(queryWrapper, JeecgDemo.class,null);
         Page<JeecgDemo> page = new Page<JeecgDemo>(pageNo, pageSize);
         IPage<JeecgDemo> pageList = jeecgDemoService.page(page, queryWrapper);
         return Result.ok(pageList);

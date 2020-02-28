@@ -51,6 +51,7 @@ public class QueryGenerator {
 	/**排序方式*/
 	private static final String ORDER_TYPE = "order";
 	private static final String ORDER_TYPE_ASC = "ASC";
+
 	
 	/**时间格式化 */
 	private static final ThreadLocal<SimpleDateFormat> local = new ThreadLocal<SimpleDateFormat>();
@@ -72,11 +73,19 @@ public class QueryGenerator {
 	public static <T> QueryWrapper<T> initQueryWrapper(T searchObj,Map<String, String[]> parameterMap){
 		long start = System.currentTimeMillis();
 		QueryWrapper<T> queryWrapper = new QueryWrapper<T>();
-		installMplus(queryWrapper, searchObj, parameterMap);
+		installMplus(queryWrapper, searchObj, parameterMap,null);
 		log.debug("---查询条件构造器初始化完成,耗时:"+(System.currentTimeMillis()-start)+"毫秒----");
 		return queryWrapper;
 	}
-	
+
+	public static <T> QueryWrapper<T> initQueryWrapper(T searchObj,Map<String, String[]> parameterMap, String alias){
+		long start = System.currentTimeMillis();
+		QueryWrapper<T> queryWrapper = new QueryWrapper<T>();
+		installMplus(queryWrapper, searchObj, parameterMap,alias);
+		log.debug("---查询条件构造器初始化完成,耗时:"+(System.currentTimeMillis()-start)+"毫秒----");
+		return queryWrapper;
+	}
+
 	/**
 	 * 组装Mybatis Plus 查询条件
 	 * <p>使用此方法 需要有如下几点注意:   
@@ -86,7 +95,7 @@ public class QueryGenerator {
 	 * <br>正确示例:QueryWrapper<JeecgDemo> queryWrapper = new QueryWrapper<JeecgDemo>();
 	 * <br>3.也可以不使用这个方法直接调用 {@link #initQueryWrapper}直接获取实例
 	 */
-	public static void installMplus(QueryWrapper<?> queryWrapper,Object searchObj,Map<String, String[]> parameterMap) {
+	public static void installMplus(QueryWrapper<?> queryWrapper,Object searchObj,Map<String, String[]> parameterMap,String alias) {
 		
 		/*
 		 * 注意:权限查询由前端配置数据规则 当一个人有多个所属部门时候 可以在规则配置包含条件 orgCode 包含 #{sys_org_code}
@@ -117,19 +126,19 @@ public class QueryGenerator {
 				
 				//数据权限查询
 				if(ruleMap.containsKey(name)) {
-					addRuleToQueryWrapper(ruleMap.get(name), name, origDescriptors[i].getPropertyType(), queryWrapper);
+					addRuleToQueryWrapper(ruleMap.get(name), name, origDescriptors[i].getPropertyType(), queryWrapper,alias);
 				}
 				
 				// 添加 判断是否有区间值
 				String endValue = null,beginValue = null;
 				if (parameterMap != null && parameterMap.containsKey(name + BEGIN)) {
 					beginValue = parameterMap.get(name + BEGIN)[0].trim();
-					addQueryByRule(queryWrapper, name, type, beginValue, QueryRuleEnum.GE);
+					addQueryByRule(queryWrapper, name, type, beginValue, QueryRuleEnum.GE,alias);
 					
 				}
 				if (parameterMap != null && parameterMap.containsKey(name + END)) {
 					endValue = parameterMap.get(name + END)[0].trim();
-					addQueryByRule(queryWrapper, name, type, endValue, QueryRuleEnum.LE);
+					addQueryByRule(queryWrapper, name, type, endValue, QueryRuleEnum.LE,alias);
 				}
 				
 				//判断单值  参数带不同标识字符串 走不同的查询
@@ -160,7 +169,7 @@ public class QueryGenerator {
 						//rule = QueryRuleEnum.LIKE;
 					//}
 					// add -end 添加判断为字符串时设为全模糊查询
-					addEasyQuery(queryWrapper, name, rule, value);
+					addEasyQuery(queryWrapper, name, rule, value,alias);
 				}
 				
 			} catch (Exception e) {
@@ -168,15 +177,15 @@ public class QueryGenerator {
 			}
 		}
 		// 排序逻辑 处理 
-		doMultiFieldsOrder(queryWrapper, parameterMap);
+		doMultiFieldsOrder(queryWrapper, parameterMap,alias);
 				
 		//高级查询
-		doSuperQuery(queryWrapper, parameterMap);
+		doSuperQuery(queryWrapper, parameterMap,alias);
 		
 	}
 	
 	//多字段排序 TODO 需要修改前端
-	public static void doMultiFieldsOrder(QueryWrapper<?> queryWrapper,Map<String, String[]> parameterMap) {
+	public static void doMultiFieldsOrder(QueryWrapper<?> queryWrapper,Map<String, String[]> parameterMap, String alias) {
 		String column=null,order=null;
 		if(parameterMap!=null&& parameterMap.containsKey(ORDER_COLUMN)) {
 			column = parameterMap.get(ORDER_COLUMN)[0];
@@ -194,9 +203,15 @@ public class QueryGenerator {
 			SqlInjectionUtil.filterContent(column); 
 			
 			if (order.toUpperCase().indexOf(ORDER_TYPE_ASC)>=0) {
-				queryWrapper.orderByAsc(oConvertUtils.camelToUnderline(column));
+				column= oConvertUtils.camelToUnderline(column);
+				if (alias!=null)
+					column=alias+"."+column;
+				queryWrapper.orderByAsc(column);
 			} else {
-				queryWrapper.orderByDesc(oConvertUtils.camelToUnderline(column));
+				column= oConvertUtils.camelToUnderline(column);
+				if (alias!=null)
+					column=alias+"."+column;
+				queryWrapper.orderByDesc(column);
 			}
 		}
 	}
@@ -206,7 +221,7 @@ public class QueryGenerator {
 	 * @param queryWrapper
 	 * @param parameterMap
 	 */
-	public static void doSuperQuery(QueryWrapper<?> queryWrapper,Map<String, String[]> parameterMap) {
+	public static void doSuperQuery(QueryWrapper<?> queryWrapper,Map<String, String[]> parameterMap,String alias) {
 		if(parameterMap!=null&& parameterMap.containsKey(SUPER_QUERY_PARAMS)){
 			String superQueryParams = parameterMap.get(SUPER_QUERY_PARAMS)[0];
 			// 解码
@@ -220,7 +235,7 @@ public class QueryGenerator {
 			
 			for (QueryCondition rule : conditions) {
 				if(oConvertUtils.isNotEmpty(rule.getField()) && oConvertUtils.isNotEmpty(rule.getRule()) && oConvertUtils.isNotEmpty(rule.getVal())){
-					addEasyQuery(queryWrapper, rule.getField(), QueryRuleEnum.getByValue(rule.getRule()), rule.getVal());
+					addEasyQuery(queryWrapper, rule.getField(), QueryRuleEnum.getByValue(rule.getRule()), rule.getVal(),alias);
 				}
 			}
 		}
@@ -316,7 +331,7 @@ public class QueryGenerator {
 		return value;
 	}
 	
-	private static void addQueryByRule(QueryWrapper<?> queryWrapper,String name,String type,String value,QueryRuleEnum rule) throws ParseException {
+	private static void addQueryByRule(QueryWrapper<?> queryWrapper,String name,String type,String value,QueryRuleEnum rule,String alias) throws ParseException {
 		if(oConvertUtils.isNotEmpty(value)) {
 			Object temp;
 			switch (type) {
@@ -345,7 +360,7 @@ public class QueryGenerator {
 				temp = value;
 				break;
 			}
-			addEasyQuery(queryWrapper, name, rule, temp);
+			addEasyQuery(queryWrapper, name, rule, temp,alias);
 		}
 	}
 	
@@ -381,12 +396,14 @@ public class QueryGenerator {
 	 * @param rule         查询规则
 	 * @param value        查询条件值
 	 */
-	private static void addEasyQuery(QueryWrapper<?> queryWrapper, String name, QueryRuleEnum rule, Object value) {
+	private static void addEasyQuery(QueryWrapper<?> queryWrapper, String name, QueryRuleEnum rule, Object value, String alias) {
 		if (value == null || rule == null || oConvertUtils.isEmpty(value)) {
 			return;
 		}
 		name = oConvertUtils.camelToUnderline(name);
 		log.info("--查询规则-->"+name+" "+rule.getValue()+" "+value);
+		if (alias!=null)
+			name=alias+"."+name;
 		switch (rule) {
 		case GT:
 			queryWrapper.gt(name, value);
@@ -464,7 +481,7 @@ public class QueryGenerator {
 		return ruleMap;
 	}
 	
-	private static void addRuleToQueryWrapper(SysPermissionDataRuleModel dataRule, String name, Class propertyType, QueryWrapper<?> queryWrapper) {
+	private static void addRuleToQueryWrapper(SysPermissionDataRuleModel dataRule, String name, Class propertyType, QueryWrapper<?> queryWrapper,String alias) {
 		QueryRuleEnum rule = QueryRuleEnum.getByValue(dataRule.getRuleConditions());
 		if(rule.equals(QueryRuleEnum.IN) && ! propertyType.equals(String.class)) {
 			String[] values = dataRule.getRuleValue().split(",");
@@ -472,12 +489,12 @@ public class QueryGenerator {
 			for (int i = 0; i < values.length; i++) {
 				objs[i] = NumberUtils.parseNumber(values[i], propertyType);
 			}
-			addEasyQuery(queryWrapper, name, rule, objs);
+			addEasyQuery(queryWrapper, name, rule, objs,alias);
 		}else {
 			if (propertyType.equals(String.class)) {
-				addEasyQuery(queryWrapper, name, rule, converRuleValue(dataRule.getRuleValue()));
+				addEasyQuery(queryWrapper, name, rule, converRuleValue(dataRule.getRuleValue()),alias);
 			} else {
-				addEasyQuery(queryWrapper, name, rule, NumberUtils.parseNumber(dataRule.getRuleValue(), propertyType));
+				addEasyQuery(queryWrapper, name, rule, NumberUtils.parseNumber(dataRule.getRuleValue(), propertyType),alias);
 			}
 		}
 	}
@@ -705,7 +722,7 @@ public class QueryGenerator {
 	 * @param parameterMap
 	 * @return
 	 */
-	public static void installAuthMplus(QueryWrapper<?> queryWrapper,Class<?> clazz) {
+	public static void installAuthMplus(QueryWrapper<?> queryWrapper,Class<?> clazz ,String alias) {
 		//权限查询
 		Map<String,SysPermissionDataRuleModel> ruleMap = getRuleMap();
 		PropertyDescriptor origDescriptors[] = PropertyUtils.getPropertyDescriptors(clazz);
@@ -721,7 +738,7 @@ public class QueryGenerator {
 				continue;
 			}
 			if(ruleMap.containsKey(name)) {
-				addRuleToQueryWrapper(ruleMap.get(name), name, origDescriptors[i].getPropertyType(), queryWrapper);
+				addRuleToQueryWrapper(ruleMap.get(name), name, origDescriptors[i].getPropertyType(), queryWrapper,alias);
 			}
 		}
 	}

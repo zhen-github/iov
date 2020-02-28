@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jeecg.modules.iov.mapper.CarLogMapper">
+
+
+    <select id="list" resultType="org.jeecg.modules.iov.entity.CarLog">
+		SELECT
+		a.id as id,
+		a.create_by as createBy,
+		a.create_time  as createTime,
+		a.update_by as updateBy,
+		a.update_time as updateTime,
+		a.sys_org_code as sysOrgCode,
+		a.car_id as "car.id",
+		a.status as status,
+		b.car_number as "car.carNumber"
+		FROM iov_car_log a LEFT JOIN iov_car b on a.car_id=b.id
+		WHERE
+		${ew.sqlSegment}
+
+	</select>
+
+
+    <insert id="add">
+        INSERT INTO iov_car_log(
+			id,
+			create_by,
+			create_time,
+			update_by,
+			update_time,
+			sys_org_code,
+            car_id,
+            status
+		) VALUES (
+			#{id},
+			#{createBy},
+			#{createTime},
+			#{updateBy},
+			#{updateTime},
+			#{sysOrgCode},
+			#{car.id},
+			#{status}
+		)
+    </insert>
+
+    <update id="updateStatus">
+		update iov_car_log
+		set
+		status=#{status},
+		update_time=#{updateTime}
+		where
+		id=#{id}
+	</update>
+
+</mapper>

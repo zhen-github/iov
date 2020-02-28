@@ -45,7 +45,6 @@
         getAction(this.url,filterObj(this.parameter)).then((res) => {
           if (res.success) {
             this.breakdownData=res.result;
-            console.log(res.result) ;
           }
           if(res.code===510){
             this.$message.warning(res.message)

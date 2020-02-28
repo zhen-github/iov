@@ -15,6 +15,6 @@ public interface ICarStatusService extends IService<CarStatus> {
     void add(CarStatus carStatus);
     void delByCar(CarStatus carStatus);
     void updateStatus(CarStatus carStatus);
-    IPage<CarStatus> list(IPage<CarStatus> page, Wrapper<CarStatus> queryWrapper,String userId);
+    IPage<CarStatus> list(IPage<CarStatus> page, String userId);
     void  inactive(String mac);
 }

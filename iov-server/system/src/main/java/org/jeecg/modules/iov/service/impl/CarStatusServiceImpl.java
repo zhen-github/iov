@@ -36,9 +36,9 @@ public class CarStatusServiceImpl extends ServiceImpl<CarStatusMapper, CarStatus
 
 
     @Override
-    public IPage<CarStatus> list(IPage<CarStatus> page, Wrapper<CarStatus> queryWrapper, String userId){
+    public IPage<CarStatus> list(IPage<CarStatus> page, String userId){
 
-        return super.baseMapper.list(page,queryWrapper,userId);
+        return super.baseMapper.list(page,userId);
     }
 
     @Override
