@@ -25,7 +25,7 @@
     name: 'TrailModal',
     data() {
       return {
-        title: '定位',
+        title: '轨迹',
         width: 800,
         visible: false,
         flag: false,

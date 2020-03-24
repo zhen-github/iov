@@ -36,84 +36,130 @@
             dataIndex: 'car.carNumber'
           },
           {
-            title:'催化剂温度(缸组1,传感器1) ',
-            align:"center",
-            dataIndex: 'catalyzerTemOneOne'
+            title:'催化剂温度',
+            children:[
+              {
+                title:'缸组1',
+                children:[
+                  {
+                    title:'传感器1',
+                    align:"center",
+                    dataIndex: 'catalyzerTemOneOne'
+                  },
+                  {
+                    title:'传感器2 ',
+                    align:"center",
+                    dataIndex: 'catalyzerTemOneTwo'
+                  }
+                ]
+              },
+              {
+                title:'缸组2',
+                children:[
+                  {
+                    title:'传感器1',
+                    align:"center",
+                    dataIndex: 'catalyzerTemTwoOne'
+                  },
+                  {
+                    title:'传感器2',
+                    align:"center",
+                    dataIndex: 'catalyzerTemTwoTwo'
+                  },
+                ]
+              }
+            ]
           },
           {
-            title:'催化剂温度(缸组2,传感器1) ',
-            align:"center",
-            dataIndex: 'catalyzerTemTwoOne'
+            title:'氧传感器电压',
+            children:[
+              {
+                title:'缸组1',
+                children:[
+                  {
+                    title:'传感器1',
+                    align:"center",
+                    dataIndex: 'osvOneOne'
+                  },
+                  {
+                    title:'传感器2',
+                    align:"center",
+                    dataIndex: 'osvOneTwo'
+                  },
+                  {
+                    title:'传感器3',
+                    align:"center",
+                    dataIndex: 'osvOneThere'
+                  },
+                  {
+                    title:'传感器4',
+                    align:"center",
+                    dataIndex: 'osvOneFour'
+                  },
+                ]
+              },
+              {
+                title:'缸组2',
+                children:[
+                  {
+                    title:'传感器1',
+                    align:"center",
+                    dataIndex: 'osvTwoOne'
+                  },
+                  {
+                    title:'传感器2',
+                    align:"center",
+                    dataIndex: 'osvTwoTwo'
+                  },
+                  {
+                    title:'传感器3',
+                    align:"center",
+                    dataIndex: 'osvTwoThere'
+                  },
+                  {
+                    title:'传感器4',
+                    align:"center",
+                    dataIndex: 'osvTwoFour'
+                  },
+                ]
+              },
+            ]
           },
           {
-            title:'催化剂温度(缸组1,传感器2) ',
-            align:"center",
-            dataIndex: 'catalyzerTemOneTwo'
-          },
-          {
-            title:'催化剂温度(缸组2,传感器2) ',
-            align:"center",
-            dataIndex: 'catalyzerTemTwoTwo'
-          },
-          {
-            title:'氧传感器电压(缸组1,传感器1)',
-            align:"center",
-            dataIndex: 'osvOneOne'
-          },
-          {
-            title:'氧传感器电压(缸组1,传感器2)',
-            align:"center",
-            dataIndex: 'osvOneTwo'
-          },
-          {
-            title:'氧传感器电压(缸组1,传感器3)',
-            align:"center",
-            dataIndex: 'osvOneThere'
-          },
-          {
-            title:'氧传感器电压(缸组1,传感器4)',
-            align:"center",
-            dataIndex: 'osvOneFour'
-          },
-          {
-            title:'氧传感器电压(缸组2,传感器1)',
-            align:"center",
-            dataIndex: 'osvTwoOne'
-          },
-          {
-            title:'氧传感器电压(缸组2,传感器2)',
-            align:"center",
-            dataIndex: 'osvTwoTwo'
-          },
-          {
-            title:'氧传感器电压(缸组2,传感器3)',
-            align:"center",
-            dataIndex: 'osvTwoThere'
-          },
-          {
-            title:'氧传感器电压(缸组2,传感器4)',
-            align:"center",
-            dataIndex: 'osvTwoFour'
-          },
-          {
-            title:'短期燃油修正(缸组1) ',
-            align:"center",
-            dataIndex: 'stfcOne'
-          },
-          {
-            title:'长期燃油修正(缸组1)',
-            align:"center",
-            dataIndex: 'ltfcOne'
-          },
-          {
-            title:'短期燃油修正(缸组2)',
-            align:"center",
-            dataIndex: 'stfcTwo'
-          },
-          {
-            title:'长期燃油修正(缸组2)',
-            align:"center",
-            dataIndex: 'ltfcTwo'
+            title:'燃油修正',
+            children:[
+              {
+                title:'缸组1',
+                children:[
+
+                  {
+                    title:'短期 ',
+                    align:"center",
+                    dataIndex: 'stfcOne'
+                  },
+                  {
+                    title:'长期',
+                    align:"center",
+                    dataIndex: 'ltfcOne'
+                  }
+                ]
+              },
+              {
+                title:'缸组2',
+                children:[
+                  {
+                    title:'短期',
+                    align:"center",
+                    dataIndex: 'stfcTwo'
+                  },
+                  {
+                    title:'长期',
+                    align:"center",
+                    dataIndex: 'ltfcTwo'
+                  }
+                ]
+              }
+            ]
           }
         ],
       }

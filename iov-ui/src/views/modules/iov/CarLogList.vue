@@ -5,14 +5,14 @@
       <a-form layout="inline" @keyup.enter.native="searchQuery">
         <a-row :gutter="24">
           <a-col :md="12" :sm="16">
-            <a-form-item label="创建日期">
+            <a-form-item label="开始时间">
               <j-date :show-time="true" date-format="YYYY-MM-DD " placeholder="请选择开始时间" class="query-group-cust" v-model="queryParam.createTime_begin"></j-date>
               <span class="query-group-split-cust"></span>
               <j-date :show-time="true" date-format="YYYY-MM-DD " placeholder="请选择结束时间" class="query-group-cust" v-model="queryParam.createTime_end"></j-date>
             </a-form-item>
           </a-col>
           <a-col :md="12" :sm="16">
-            <a-form-item label="更新日期">
+            <a-form-item label="结束时间">
               <j-date :show-time="true" date-format="YYYY-MM-DD" placeholder="请选择开始时间" class="query-group-cust" v-model="queryParam.updateTime_begin"></j-date>
               <span class="query-group-split-cust"></span>
               <j-date :show-time="true" date-format="YYYY-MM-DD" placeholder="请选择结束时间" class="query-group-cust" v-model="queryParam.updateTime_end"></j-date>
