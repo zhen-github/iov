@@ -42,8 +42,10 @@
 		a.ltfc_two as ltfcTwo,
 		b.car_number as "car.carNumber"
 		FROM iov_car_status a LEFT JOIN iov_car b on a.car_id=b.id
-		WHERE b.create_by=#{userId}
-		ORDER BY a.create_time DESC
+		<if test="ew.emptyOfWhere == false">
+		WHERE
+		</if>
+		${ew.sqlSegment}
 	</select>
 
     <insert id="add">

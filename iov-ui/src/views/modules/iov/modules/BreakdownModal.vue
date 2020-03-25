@@ -13,6 +13,9 @@
         <a-form-item label="故障码" :labelCol="labelCol" :wrapperCol="wrapperCol">
           <a-input v-decorator="[ 'breakdownCode', validatorRules.breakdownCode]" placeholder="请输入故障码"></a-input>
         </a-form-item>
+        <a-form-item label="故障定义" :labelCol="labelCol" :wrapperCol="wrapperCol">
+          <a-input v-decorator="[ 'definition', validatorRules.definition]" placeholder="请输入故障描述"></a-input>
+        </a-form-item>
         <a-form-item label="故障描述" :labelCol="labelCol" :wrapperCol="wrapperCol">
           <a-input v-decorator="[ 'mean', validatorRules.mean]" placeholder="请输入故障描述"></a-input>
         </a-form-item>
@@ -53,6 +56,9 @@
             {required: true, message: '请输入故障码!'},
             { validator: (rule, value, callback) => validateDuplicateValue('iov_breakdown', 'breakdown_code', value, this.model.id, callback)},
           ]},
+          definition:{rules: [
+            {required: true, message: '请输入故障定义!'},
+          ]},
           mean: {rules: [
             {required: true, message: '请输入故障描述!'},
           ]},
@@ -74,7 +80,7 @@
         this.model = Object.assign({}, record);
         this.visible = true;
         this.$nextTick(() => {
-          this.form.setFieldsValue(pick(this.model,'breakdownCode','mean'))
+          this.form.setFieldsValue(pick(this.model,'breakdownCode','definition','mean'))
         })
       },
       close () {
@@ -117,7 +123,7 @@
         this.close()
       },
       popupCallback(row){
-        this.form.setFieldsValue(pick(row,'breakdownCode','mean'))
+        this.form.setFieldsValue(pick(row,'breakdownCode','definition','mean'))
       },
 
       

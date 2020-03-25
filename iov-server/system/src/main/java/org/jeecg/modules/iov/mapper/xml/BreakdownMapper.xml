@@ -5,6 +5,7 @@
     <select id="listByCode" resultType="org.jeecg.modules.iov.entity.Breakdown">
         SELECT
         breakdown_code AS "breakdownCode",
+        definition AS "definition",
         mean AS "mean"
         FROM iov_breakdown
         WHERE breakdown_code in

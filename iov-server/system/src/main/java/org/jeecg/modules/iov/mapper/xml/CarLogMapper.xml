@@ -15,7 +15,9 @@
 		a.status as status,
 		b.car_number as "car.carNumber"
 		FROM iov_car_log a LEFT JOIN iov_car b on a.car_id=b.id
-		WHERE
+		<if test="ew.emptyOfWhere == false">
+			WHERE
+		</if>
 		${ew.sqlSegment}
 
 	</select>

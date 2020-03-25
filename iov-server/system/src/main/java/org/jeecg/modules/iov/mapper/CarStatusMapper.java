@@ -17,7 +17,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 public interface CarStatusMapper extends BaseMapper<CarStatus> {
     void delByCar(CarStatus carStatus);
     void add(CarStatus carStatus);
-    IPage<CarStatus> list(IPage<CarStatus> page,@Param("userId")String userId);
+    IPage<CarStatus> list(IPage<CarStatus> page,@Param("ew") Wrapper<CarStatus> queryWrapper);
     void  inactive(@Param("mac")String mac);
     void updateStatus(CarStatus carStatus);
 }

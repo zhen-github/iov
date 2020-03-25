@@ -12,7 +12,7 @@
         <a-list-item-meta
           :description="item.mean"
         >
-          <a slot="title">错误代码：{{item.breakdownCode}}</a>
+          <a slot="title">错误：{{item.breakdownCode}}   {{item.definition}}</a>
         </a-list-item-meta>
       </a-list-item>
     </a-list>

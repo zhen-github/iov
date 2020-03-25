@@ -60,12 +60,14 @@ public class CarStatusController extends JeecgController<CarStatus, ICarStatusSe
 	 * @return
 	 */
 	@GetMapping(value = "/list")
+	@PermissionData(pageComponent="modules/iov/CarStatusList")
 	public Result<?> queryPageList(CarStatus carStatus,
 								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
-								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize) {
+								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
+								   HttpServletRequest req) {
+		QueryWrapper<CarStatus> queryWrapper = QueryGenerator.initQueryWrapper(carStatus, req.getParameterMap(),"b");
 		Page<CarStatus> page = new Page<CarStatus>(pageNo, pageSize);
-		LoginUser sysUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-		IPage<CarStatus> pageList = carStatusService.list(page,sysUser.getUsername());
+		IPage<CarStatus> pageList = carStatusService.list(page,queryWrapper);
 		return Result.ok(pageList);
 	}
 	

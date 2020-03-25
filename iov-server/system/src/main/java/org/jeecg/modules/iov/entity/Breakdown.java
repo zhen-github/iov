@@ -47,9 +47,12 @@ public class Breakdown implements Serializable {
 	@Excel(name = "所属部门", width = 15)
     private java.lang.String sysOrgCode;
 	/**故障码*/
-	@Excel(name = "故障码", width = 15)
+	@Excel(name = "故障码", width = 10)
     private java.lang.String breakdownCode;
+	/**故障定义*/
+	@Excel(name = "定义", width = 64)
+	private java.lang.String definition;
 	/**故障描述*/
-	@Excel(name = "故障描述", width = 15)
+	@Excel(name = "故障描述", width = 255)
     private java.lang.String mean;
 }

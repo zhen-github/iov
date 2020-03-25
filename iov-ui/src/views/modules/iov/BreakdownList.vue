@@ -135,6 +135,11 @@
             dataIndex: 'breakdownCode'
           },
           {
+            title:'定义',
+            align:"center",
+            dataIndex: 'definition'
+          },
+          {
             title:'故障描述',
             align:"center",
             dataIndex: 'mean'
