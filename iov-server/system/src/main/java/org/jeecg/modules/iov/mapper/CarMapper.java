@@ -13,5 +13,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @Version: V1.0
  */
 public interface CarMapper extends BaseMapper<Car> {
+    boolean add(Car car);
+    void updateMotorcadeById(@Param("id")String id,@Param("sysOrgCode") String motorcadeCode);
 
 }

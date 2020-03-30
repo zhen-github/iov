@@ -2,7 +2,7 @@
   <a-modal
     :width="modalWidth"
     :visible="visible"
-    title="部门搜索"
+    title="车队搜索"
     :confirmLoading="confirmLoading"
     @ok="handleSubmit"
     @cancel="handleCancel"
@@ -36,19 +36,16 @@
   import pick from 'lodash.pick'
   import { getAction } from '@/api/manage'
   import { queryIdTree } from '@/api/api'
-  import userModal from './UserModal'
   export default {
-    name: "DepartWindow",
+    name: "MotorcadeWindow",
     components: {
-      userModal,
+
     },
     data () {
       return {
-        checkedKeys:[], // 存储选中的部门id
-        userId:"", // 存储用户id
-        model:{}, // 存储SysUserDepartsVO表
-        userDepartModel:{userId:'',departIdList:[]}, // 存储用户id一对多部门信息的对象
-        departList:[], // 存储部门信息
+        checkedKeys:[],
+        carId:"",
+        motorcadeId:"",
         modalWidth:400,
         departTree:[],
         title:"操作",
@@ -65,63 +62,44 @@
         headers:{},
         form:this.$form.createForm(this),
         url: {
-          userId:"/sys/user/generateUserId", // 引入生成添加用户情况下的url
+          updateUrl:"/iov/car/updateMotorcadeById",
         },
       }
     },
     methods: {
-      add (checkedDepartKeys,userId) {
-        this.checkedKeys = checkedDepartKeys;
-        this.userId = userId;
-        this.edit({});
-      },
-      edit (record) {
-        this.departList = [];
+      add (motorcadeKey,carId) {
+        this.checkedKeys.push(motorcadeKey);
+        this.carId = carId;
         this.queryDepartTree();
-        this.form.resetFields();
         this.visible = true;
-        this.model = Object.assign({}, record);
-        let filedsVal = pick(this.model,'id','userId','departIdList');
-        this.$nextTick(() => {
-          this.form.setFieldsValue(filedsVal);
-        });
       },
       close () {
         this.$emit('close');
         this.visible = false;
-        this.departList = [];
+        this.carId="";
+        this.motorcadeId="";
         this.checkedKeys = [];
       },
       handleSubmit () {
-        const that = this;
-        // 触发表单验证
-        this.form.validateFields((err) => {
-          if (!err) {
-            that.confirmLoading = true;
-            if(this.userId == null){
-              getAction(this.url.userId).then((res)=>{
-                if(res.success){
-                  let formData = {userId:res.result,
-                  departIdList:this.departList}
-                  console.log(formData)
-                  that.$emit('ok', formData);
-                }
-              }).finally(() => {
-                that.departList = [];
-                that.confirmLoading = false;
-                that.close();
-              })
-            }else {
-              let formData = {userId:this.userId,
-                departIdList:this.departList}
-              console.log(formData)
-              that.departList = [];
-              that.$emit('ok', formData);
-              that.confirmLoading = false;
-              that.close();
+        if (this.checkedKeys.length>1)
+          console.log("错误")
+        else {
+          if(this.checkedKeys.length==1)
+            this.motorcadeId = this.checkedKeys[0];
+          else
+            this.motorcadeId="";
+          getAction(this.url.updateUrl,{carId:this.carId,motorcadeId:this.motorcadeId}).then((res)=>{
+            if(res.success){
+              this.$emit("updataMotorcade");
+            }else{
+              console.log(res.message);
             }
-          }
-        })
+          }).finally(() => {
+            this.confirmLoading = false;
+
+          })
+        }
+        this.close();
       },
       handleCancel () {
         this.close()
@@ -129,18 +107,15 @@
 
       // 选择部门时作用的API
       onCheck(checkedKeys, info){
-        this.departList = [];
-        this.checkedKeys = checkedKeys.checked;
-        let checkedNodes = info.checkedNodes;
-        for (let i = 0; i < checkedNodes.length; i++) {
-          let de = checkedNodes[i].data.props;
-          let depart = {key:"",value:"",title:""};
-          depart.key = de.value;
-          depart.value = de.value;
-          depart.title = de.title;
-          this.departList.push(depart);
+        if (checkedKeys.checked.length==0)
+          this.checkedKeys = [];
+        for (let i = 0; i < checkedKeys.checked.length; i++) {
+          if (!this.checkedKeys.includes(checkedKeys.checked[i])){
+            this.checkedKeys = [];
+            this.checkedKeys.push(checkedKeys.checked[i]);
+            break;
+          }
         }
-        console.log('onCheck', checkedKeys, info);
       },
       queryDepartTree(){
         queryIdTree().then((res)=>{

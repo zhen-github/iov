@@ -70,6 +70,18 @@ public class CarLogController extends JeecgController<CarLog, ICarLogService> {
 		IPage<CarLog> pageList = carLogService.list(page, queryWrapper);
 		return Result.ok(pageList);
 	}
+
+	 @GetMapping(value = "/queryPageList")
+	 public Result<?> queryPage(CarLog carLog,
+									@RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
+									@RequestParam(name="pageSize", defaultValue="10") Integer pageSize,@RequestParam(name="motorcadeCode")String orgCode,
+									HttpServletRequest req) {
+		 QueryWrapper<CarLog> queryWrapper = QueryGenerator.initQueryWrapper(carLog, req.getParameterMap(),"a");
+		 Page<CarLog> page = new Page<CarLog>(pageNo, pageSize);
+		 queryWrapper.eq("b.sys_org_code",orgCode);
+		 IPage<CarLog> pageList = carLogService.list(page, queryWrapper);
+		 return Result.ok(pageList);
+	 }
 	
 	/**
 	 *   添加

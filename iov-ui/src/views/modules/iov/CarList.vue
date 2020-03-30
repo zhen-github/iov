@@ -65,6 +65,16 @@
           </a-button>
         </template>
 
+        <template  slot="sysOrgCode" slot-scope="text, record">
+          <a-input-search
+            placeholder="点击右侧按钮加入车队"
+            v-model="record.sysOrgCode_dictText"
+            disabled
+            @search="onSearch(record.sysOrgCode,record.id)">
+            <a-button slot="enterButton" icon="search">选择</a-button>
+          </a-input-search>
+        </template >
+
         <span slot="action" slot-scope="text, record">
           <a @click="handleEdit(record)">编辑</a>
 
@@ -83,7 +93,7 @@
 
       </a-table>
     </div>
-
+    <motorcade-window ref="motorcade" @updataMotorcade="onUpdataMotorcade"></motorcade-window>
     <car-modal ref="modalForm" @ok="modalFormOk"></car-modal>
   </a-card>
 </template>
@@ -92,17 +102,21 @@
 
   import { JeecgListMixin } from '@/mixins/JeecgListMixin'
   import CarModal from './modules/CarModal'
+  import MotorcadeWindow from './modules/MotorcadeWindow'
+  import { getAction } from '@/api/manage'
 
   export default {
     name: "CarList",
     mixins:[JeecgListMixin],
     components: {
+      MotorcadeWindow,
       CarModal
     },
     data () {
       return {
         description: '车辆管理管理页面',
         // 表头
+        motorcadeId: '',
         columns: [
           {
             title: '#',
@@ -130,6 +144,12 @@
             dataIndex: 'carNumber'
           },
           {
+            title:'车队',
+            align:"center",
+            dataIndex:'sysOrgCode',
+            scopedSlots: { customRender: 'sysOrgCode' }
+          },
+          {
             title:'备注',
             align:"center",
             dataIndex: 'remark'
@@ -147,6 +167,7 @@
           deleteBatch: "/iov/car/deleteBatch",
           exportXlsUrl: "/iov/car/exportXls",
           importExcelUrl: "iov/car/importExcel",
+          motorcadeUrl:"/sys/sysDepart/getDepart"
         },
         dictOptions:{
         },
@@ -159,6 +180,21 @@
     },
     methods: {
       initDictConfig(){
+      },
+      onSearch(motorcadeKey,carId){
+        if(motorcadeKey!=null)
+        getAction(this.url.motorcadeUrl,{orgCode:motorcadeKey}).then((res)=>{
+          if(res.success){
+            this.$refs.motorcade.add(res.result.id,carId);
+          }else{
+            console.log(res.message);
+          }
+        })
+        else
+          this.$refs.motorcade.add(null,carId);
+      },
+      onUpdataMotorcade(){
+        this.loadData();
       }
        
     }

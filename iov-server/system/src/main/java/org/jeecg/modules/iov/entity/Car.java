@@ -45,6 +45,7 @@ public class Car implements Serializable {
     private java.util.Date updateTime;
 	/**所属部门*/
 	@Excel(name = "所属部门", width = 15)
+	@Dict(dicCode = "org_code", dictTable = "sys_depart", dicText = "depart_name")
     private java.lang.String sysOrgCode;
 	/**mac(暂定 车辆唯一标识)*/
 	@Excel(name = "mac(暂定 车辆唯一标识)", width = 15)

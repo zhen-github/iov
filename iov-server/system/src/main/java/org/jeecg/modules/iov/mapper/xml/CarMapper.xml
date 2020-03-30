@@ -2,14 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.jeecg.modules.iov.mapper.CarMapper">
 
-    <insert id="saveById" parameterType="org.jeecg.modules.iov.entity.Car"  keyProperty="id">
+    <insert id="add">
 		INSERT INTO iov_car(
 			id,
 			create_by,
 			create_time,
 			update_by,
 			update_time,
-			sys_org_code,
 			mac,
 			brand,
 			car_number,
@@ -20,12 +19,17 @@
 			#{createTime},
 			#{updateBy},
 			#{updateTime},
-			#{sysOrgCode},
 			#{mac},
 			#{brand},
 			#{carNumber},
 			#{remark}
 		)
 	</insert>
+
+	<update id="updateMotorcadeById">
+		update iov_car
+		set sys_org_code=#{sysOrgCode}
+		where id=#{id}
+	</update>
 
 </mapper>

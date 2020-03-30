@@ -10,6 +10,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.jeecg.common.api.vo.Result;
@@ -337,4 +339,43 @@ public class SysDepartController {
         }
         return Result.error("文件导入失败！");
     }
+
+
+    @RequestMapping(value = "/getDepart")
+    public Result<?> getDepart(SysDepart sysDepart,HttpServletRequest req){
+		QueryWrapper<SysDepart> queryWrapper = QueryGenerator.initQueryWrapper(sysDepart, req.getParameterMap());
+		sysDepart = sysDepartService.getOne(queryWrapper);
+    	return Result.ok(sysDepart);
+	}
+
+	@RequestMapping(value = "/addMotorcade")
+	@CacheEvict(value= {CacheConstant.SYS_DEPARTS_CACHE,CacheConstant.SYS_DEPART_IDS_CACHE}, allEntries=true)
+	public Result<SysDepart> addMotorcade(@RequestBody SysDepart sysDepart, HttpServletRequest request) {
+		Result<SysDepart> result = new Result<SysDepart>();
+		String username = JwtUtil.getUserNameByToken(request);
+		String parentOrgCode =((LoginUser) SecurityUtils.getSubject().getPrincipal()).getOrgCode();
+		try {
+			QueryWrapper<SysDepart> queryWrapper=new QueryWrapper<>();
+			queryWrapper.eq("org_code",parentOrgCode);
+			sysDepart.setParentId(sysDepartService.getOne(queryWrapper).getId());
+			sysDepart.setCreateBy(username);
+			sysDepartService.saveDepartData(sysDepart, username);
+			result.success("添加成功！");
+		} catch (Exception e) {
+			log.error(e.getMessage(),e);
+			result.error500("操作失败");
+		}
+		return result;
+	}
+
+	@RequestMapping(value = "/motorcadeList")
+	public Result<?> list(SysDepart sysDepart,@RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
+						  @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,HttpServletRequest req){
+		QueryWrapper<SysDepart> queryWrapper = QueryGenerator.initQueryWrapper(sysDepart, req.getParameterMap());
+		Page<SysDepart> page = new Page<SysDepart>(pageNo, pageSize);
+		String parentOrgCode =((LoginUser) SecurityUtils.getSubject().getPrincipal()).getOrgCode();
+		queryWrapper.likeRight("org_code",parentOrgCode);
+		IPage<SysDepart> pageList = sysDepartService.page(page,queryWrapper);
+		return Result.ok(pageList);
+	}
 }

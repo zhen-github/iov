@@ -63,6 +63,7 @@
       MapModal,
       CarStatusModal
     },
+    props:["parentQueryParam"],
     data () {
       return {
         description: '车况管理页面',
@@ -155,6 +156,11 @@
       }
     },
     methods: {
+      initData(){
+        if (this.parentQueryParam!=null){
+          this.queryParam=this.parentQueryParam;
+        }
+      },
       mapShow(record){
           this.$refs.map.mapShow(record)
       },
@@ -166,7 +172,11 @@
       },
       initDictConfig(){
       }
-       
+    },
+    watch:{
+      parentQueryParam(val){
+        this.loadData();
+      }
     }
   }
 </script>

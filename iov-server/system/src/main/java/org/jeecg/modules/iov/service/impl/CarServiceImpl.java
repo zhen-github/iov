@@ -15,5 +15,13 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
  */
 @Service
 public class CarServiceImpl extends ServiceImpl<CarMapper, Car> implements ICarService {
+    @Override
+    public boolean add(Car car) {
+        return super.baseMapper.add(car);
+    }
 
+    @Override
+    public void updateMotorcadeById(String id, String motorcadeCode) {
+        super.baseMapper.updateMotorcadeById(id,motorcadeCode);
+    }
 }

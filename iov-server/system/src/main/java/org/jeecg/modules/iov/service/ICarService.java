@@ -10,5 +10,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @Version: V1.0
  */
 public interface ICarService extends IService<Car> {
+    boolean add(Car car);
+    void updateMotorcadeById(String id,String motorcadeCode);
 
 }

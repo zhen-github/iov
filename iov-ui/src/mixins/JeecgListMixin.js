@@ -60,6 +60,7 @@ export const JeecgListMixin = {
   },
   methods:{
     loadData(arg) {
+      this.initData();
       if(!this.url.list){
         this.$message.error("请设置url.list属性!")
         return
@@ -299,6 +300,9 @@ export const JeecgListMixin = {
       }
       window.open(window._CONFIG['domianURL'] + "/sys/common/download/"+text);
     },
+    initData() {
+      //加载数据前准备工作
+    }
   }
 
 }
