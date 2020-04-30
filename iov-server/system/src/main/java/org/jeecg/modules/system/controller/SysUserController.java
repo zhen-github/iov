@@ -759,11 +759,11 @@ public class SysUserController {
 			return result;
 		}
 
-		if (!smscode.equals(code)) {
+		/*if (!smscode.equals(code)) {
 			result.setMessage("手机验证码错误");
 			result.setSuccess(false);
 			return result;
-		}
+		}*/
 
 		try {
 			user.setCreateTime(new Date());// 设置创建时间
@@ -778,7 +778,7 @@ public class SysUserController {
 			user.setStatus(1);
 			user.setDelFlag(CommonConstant.DEL_FLAG_0.toString());
 			user.setActivitiSync(CommonConstant.ACT_SYNC_1);
-			sysUserService.addUserWithRole(user,"ee8626f80f7c2619917b6236f3a7f02b");//默认临时角色 test
+			sysUserService.addUserWithRole(user,"1255694855773270018");//默认临时角色 test
 			result.success("注册成功");
 		} catch (Exception e) {
 			result.error500("注册失败");

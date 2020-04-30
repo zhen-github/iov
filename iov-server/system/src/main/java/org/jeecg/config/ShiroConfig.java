@@ -70,6 +70,9 @@ public class ShiroConfig {
 		filterChainDefinitionMap.put("/big/screen/**", "anon");
 		filterChainDefinitionMap.put("/bigscreen/**", "anon");
 
+
+		//filterChainDefinitionMap.put("/iov/**", "anon");
+
 		//cas验证登录
 		filterChainDefinitionMap.put("/cas/client/validateLogin", "anon");
 		// 配置不会被拦截的链接 顺序判断

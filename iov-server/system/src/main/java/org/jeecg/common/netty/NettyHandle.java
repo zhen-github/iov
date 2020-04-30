@@ -5,6 +5,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.util.CharsetUtil;
 import io.netty.util.ReferenceCountUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,6 +23,7 @@ public class NettyHandle extends ChannelInboundHandlerAdapter {
 
         try {
             ByteBuf buf = (ByteBuf) msg;
+            System.out.println(((ByteBuf) msg).toString(CharsetUtil.UTF_8));
             nettyDataEngine.dataEngine(ctx.channel().id().asLongText(), buf);//调用消息解析
             ctx.writeAndFlush(Unpooled.copiedBuffer("收到".getBytes()));
         } finally {

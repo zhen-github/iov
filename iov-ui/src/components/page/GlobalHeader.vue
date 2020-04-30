@@ -17,7 +17,7 @@
         :type="collapsed ? 'menu-unfold' : 'menu-fold'"
         @click.native="toggle"/>
 
-      <span v-if="device === 'desktop'">欢迎进入 Jeecg-Boot 企业级快速开发平台</span>
+      <span v-if="device === 'desktop'"></span>
       <span v-else>iov</span>
 
       <user-menu :theme="theme"/>

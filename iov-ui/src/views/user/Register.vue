@@ -36,16 +36,7 @@
         :fieldDecoratorOptions="{rules: [{ required: true, type: 'email', message: '请输入正确的邮箱地址' }, { validator: this.handleEmailCheck }], validateTrigger: ['change', 'blur']}">
         <a-input size="large" type="text" placeholder="邮箱"></a-input>
       </a-form-item>
-      <a-form-item
-        fieldDecoratorId="mobile"
-        :fieldDecoratorOptions="{rules: [{ required: true, pattern: /^1[3456789]\d{9}$/, message: '请输入正确的手机号' }, { validator: this.handlePhoneCheck } ], validateTrigger: ['change', 'blur'] }">
-        <a-input size="large" placeholder="11 位手机号">
-          <a-select slot="addonBefore" size="large" defaultValue="+86">
-            <a-select-option value="+86">+86</a-select-option>
-            <a-select-option value="+87">+87</a-select-option>
-          </a-select>
-        </a-input>
-      </a-form-item>
+
       <!--<a-input-group size="large" compact>
             <a-select style="width: 20%" size="large" defaultValue="+86">
               <a-select-option value="+86">+86</a-select-option>
@@ -54,25 +45,6 @@
             <a-input style="width: 80%" size="large" placeholder="11 位手机号"></a-input>
           </a-input-group>-->
 
-      <a-row :gutter="16">
-        <a-col class="gutter-row" :span="16">
-          <a-form-item
-            fieldDecoratorId="captcha"
-            :fieldDecoratorOptions="{rules: [{ required: true, message: '请输入验证码' }], validateTrigger: 'blur'}">
-            <a-input size="large" type="text" placeholder="验证码">
-              <a-icon slot="prefix" type="mail" :style="{ color: 'rgba(0,0,0,.25)' }"/>
-            </a-input>
-          </a-form-item>
-        </a-col>
-        <a-col class="gutter-row" :span="8">
-          <a-button
-            class="getCaptcha"
-            size="large"
-            :disabled="state.smsSendBtn"
-            @click.stop.prevent="getCaptcha"
-            v-text="!state.smsSendBtn && '获取验证码'||(state.time+' s')"></a-button>
-        </a-col>
-      </a-row>
 
       <a-form-item>
         <a-button
@@ -216,18 +188,7 @@
         callback()
       },
 
-      handlePhoneCheck(rule, value, callback) {
-        var params = {
-          phone: value,
-        };
-        checkOnlyUser(params).then((res) => {
-          if (res.success) {
-            callback()
-          } else {
-            callback("手机号已存在!")
-          }
-        })
-      },
+
 
       handlePasswordInputClick() {
         if (!this.isMobile()) {
@@ -244,7 +205,6 @@
               username: values.username,
               password: values.password,
               email: values.email,
-              phone: values.mobile,
               smscode: values.captcha
             };
             postAction("/sys/user/register", register).then((res) => {
