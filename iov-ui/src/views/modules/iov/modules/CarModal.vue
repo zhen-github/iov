@@ -10,8 +10,8 @@
     <a-spin :spinning="confirmLoading">
       <a-form :form="form">
 
-        <a-form-item label="mac(暂定 车辆唯一标识)" :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-input v-decorator="[ 'mac', validatorRules.mac]" placeholder="请输入mac(暂定 车辆唯一标识)"></a-input>
+        <a-form-item label="(车辆唯一标识)" :labelCol="labelCol" :wrapperCol="wrapperCol">
+          <a-input v-decorator="[ 'mac', validatorRules.mac]" placeholder="请输入( 车辆唯一标识)"></a-input>
         </a-form-item>
         <a-form-item label="车辆品牌" :labelCol="labelCol" :wrapperCol="wrapperCol">
           <a-input v-decorator="[ 'brand', validatorRules.brand]" placeholder="请输入车辆品牌"></a-input>
@@ -56,7 +56,7 @@
         confirmLoading: false,
         validatorRules: {
           mac: {rules: [
-            {required: true, message: '请输入mac(暂定 车辆唯一标识)!'},
+            {required: true, message: '请输入(车辆唯一标识)!'},
             { validator: (rule, value, callback) => validateDuplicateValue('iov_car', 'mac', value, this.model.id, callback)},
           ]},
           brand: {rules: [

@@ -57,10 +57,10 @@ public class CarStatusLog implements Serializable {
     private java.lang.Integer rotation;
 	/**加速度*/
 	@Excel(name = "加速度", width = 15)
-    private java.lang.Double acceleration;
+    private java.lang.String acceleration;
 	/**倾斜角度*/
 	@Excel(name = "倾斜角度", width = 15)
-    private java.lang.Double inclination;
+    private java.lang.String inclination;
 	/**怠速时间*/
 	@Excel(name = "怠速时间", width = 15)
     private java.lang.Double idling;

@@ -129,7 +129,7 @@
             }
           },
           {
-            title:'mac(暂定 车辆唯一标识)',
+            title:'( 车辆唯一标识)',
             align:"center",
             dataIndex: 'mac'
           },
