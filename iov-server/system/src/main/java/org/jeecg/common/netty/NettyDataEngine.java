@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.CharsetUtil;
+import org.jeecg.common.sms.SMSUtil;
 import org.jeecg.modules.iov.entity.Car;
 import org.jeecg.modules.iov.entity.CarLog;
 import org.jeecg.modules.iov.entity.CarStatus;
@@ -32,6 +33,8 @@ public class NettyDataEngine {
     private ICarLogService carLogService;
     @Autowired
     private ICarStatusLogService carStatusLogService;
+    @Autowired
+    private SMSUtil smsUtil;
 
     private String[] strs;
     private String regex = "[0-9]*(\\.?)[0-9]*";
@@ -203,6 +206,8 @@ public class NettyDataEngine {
             String[] strs = carStatus.getInclination().split(" ");
             if (Double.valueOf(strs[0]) > 90 || Double.valueOf(strs[0]) < -90) {
                 System.out.println("发生侧翻");
+                carStatus.setStatus(2);
+                //this.smsUtil.send("156.....","发生侧翻");
             }
         }
 

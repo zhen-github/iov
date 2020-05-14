@@ -23,7 +23,6 @@ public class NettyHandle extends ChannelInboundHandlerAdapter {
 
         try {
             ByteBuf buf = (ByteBuf) msg;
-            System.out.println(((ByteBuf) msg).toString(CharsetUtil.UTF_8));
             nettyDataEngine.dataEngine(ctx.channel().id().asLongText(), buf);//调用消息解析
             ctx.writeAndFlush(Unpooled.copiedBuffer("收到".getBytes()));
         } finally {

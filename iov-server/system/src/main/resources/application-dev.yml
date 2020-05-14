@@ -172,3 +172,7 @@ cas:
   prefixUrl: http://cas.example.org:8443/cas
 netty:
   port: 8890
+sms:
+  url: aa
+  uid: bb
+  key: cc

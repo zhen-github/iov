@@ -20,6 +20,7 @@
 
         <template  slot="status" slot-scope="text, record">
           <span v-if="record.status==1" style="color:#00e41c">在线</span>
+          <span v-else-if="record.status==2" style="color:#00e41c">侧翻{{warning(record)}}</span>
           <span v-else style="color:#f22d0e" >离线</span>
         </template >
         <template  slot="breakdown" slot-scope="text, record">
@@ -169,6 +170,13 @@
       },
       breakdownShow(record){
         this.$refs.breakdown.breakdownShow(record.breakdown);
+      },
+      warning(record) {
+          this.$notification['warning']({
+            message: '侧翻警告',
+            description:
+              '车辆：'+record.car.carNumber+'可能发生侧翻',
+          });
       },
       initDictConfig(){
       }
