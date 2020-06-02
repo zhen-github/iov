@@ -182,42 +182,6 @@
             ]
           },
           {
-            title: '燃油修正',
-            children: [
-              {
-                title: '缸组1',
-                children: [
-
-                  {
-                    title: '短期 ',
-                    align: 'center',
-                    dataIndex: 'stfcOne'
-                  },
-                  {
-                    title: '长期',
-                    align: 'center',
-                    dataIndex: 'ltfcOne'
-                  }
-                ]
-              },
-              {
-                title: '缸组2',
-                children: [
-                  {
-                    title: '短期',
-                    align: 'center',
-                    dataIndex: 'stfcTwo'
-                  },
-                  {
-                    title: '长期',
-                    align: 'center',
-                    dataIndex: 'ltfcTwo'
-                  }
-                ]
-              }
-            ]
-          },
-          {
             title: '定位',
             align: 'center',
             dataIndex: 'location',

@@ -128,7 +128,7 @@
             scopedSlots: { customRender: 'breakdown' }
           },
           {
-            title:'发动机详情',
+            title:'排放相关传感器',
             align:"center",
             dataIndex: 'engine',
             scopedSlots: { customRender: 'engine' }

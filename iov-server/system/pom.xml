@@ -35,10 +35,7 @@
             <groupId>org.jeecgframework.boot</groupId>
             <artifactId>common</artifactId>
         </dependency>
-        <dependency>
-            <groupId>commons-httpclient</groupId>
-            <artifactId>commons-httpclient</artifactId>
-        </dependency>
+
     </dependencies>
 
     <build>

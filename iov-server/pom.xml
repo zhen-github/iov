@@ -344,6 +344,22 @@
 	</dependencyManagement>
 	<build>
 		<plugins>
+
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>org.jeecg.JeecgApplication</mainClass>
+					<classifier>exec</classifier>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<!--指定JDK编译版本 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -362,6 +378,7 @@
 		          <skipTests>true</skipTests>
 		        </configuration>
 	        </plugin>
+
 	         <!-- 避免font文件的二进制文件格式压缩破坏 -->
 	         <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

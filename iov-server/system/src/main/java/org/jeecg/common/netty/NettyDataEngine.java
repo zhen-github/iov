@@ -53,12 +53,9 @@ public class NettyDataEngine {
         CarStatusLog carStatusLog = new CarStatusLog();
         Car car = new Car();
         carStatus.setCar(car);
-        // msg.getBytes(1, mac);
-        //bytesToHexString(mac);
-        car.setMac("D8CB8A828D3D");//设定唯一标识
-        carStatus.setStatus(1);
         for (String item : strs) {
             String[] m = item.split(":");
+            //具体数据的解析
             switch (m[0]) {
                 case "经度":
                     Matcher longMatcher = p.matcher(m[1]);
@@ -177,6 +174,8 @@ public class NettyDataEngine {
 
 
                 case "DS147":
+                    carStatus.setEngineOilTemperature(Double.valueOf(m[1].replace(" ", "")));
+                    carStatusLog.setEngineOilTemperature(Double.valueOf(m[1].replace(" ", "")));
                     break;
                 case "Acc":
                     carStatus.setAcceleration(m[1]);
@@ -192,22 +191,26 @@ public class NettyDataEngine {
                     break;
             }
         }
+        car.setMac("D8CB8A828D3D");//设定唯一标识 测试时写死了  后续多台机器可根据该字段区分机器
+        carStatus.setStatus(1);
+
         if (macMap.get(ctxId) == null | "".equals(macMap.get(ctxId))) {
-            macMap.put(ctxId, "D8CB8A828D3D");
+            macMap.put(ctxId, "D8CB8A828D3D");//
             QueryWrapper<Car> wrapper = new QueryWrapper<Car>();
             wrapper.eq("mac", "D8CB8A828D3D");
             CarLog carLog = new CarLog();
             carLog.setCar(carService.getOne(wrapper));
             carLog.setStatus(1);
             carLogService.add(carLog);
-            logMap.put(ctxId, carLog.getId());
+            logMap.put(ctxId, carLog.getId());//对在线车辆进行记录
         }
-        if (carStatus.getSpeed() == 0) {
+
+        if (carStatus.getSpeed() == 0) {//判断侧翻
             String[] strs = carStatus.getInclination().split(" ");
             if (Double.valueOf(strs[0]) > 90 || Double.valueOf(strs[0]) < -90) {
                 System.out.println("发生侧翻");
                 carStatus.setStatus(2);
-                //this.smsUtil.send("156.....","发生侧翻");
+                //this.smsUtil.send("156.....","发生侧翻");  //发送信息内容
             }
         }
 
@@ -219,11 +222,11 @@ public class NettyDataEngine {
 
     /**
      * 更新离线状态
-     *
+     *  断开连接时调用用来处理具体的后续事情
      * @param ctx
      */
     public void inactive(ChannelHandlerContext ctx) {
-        String mac = macMap.remove(ctx.channel().id().asLongText());
+        String mac = macMap.remove(ctx.channel().id().asLongText());//对车辆进行下线处理
         String log = logMap.remove(ctx.channel().id().asLongText());
         if (mac != null & !"".equals(mac)) {
             carStatusService.inactive(mac);

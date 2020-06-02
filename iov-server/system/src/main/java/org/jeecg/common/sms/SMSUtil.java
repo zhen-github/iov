@@ -22,7 +22,7 @@ import java.util.List;
 public class SMSUtil {
 
     @Value("${sms.url}")
-    String url;
+    String url;//
     @Value("${sms.uid}")
     String uid;
     @Value("${sms.key}")

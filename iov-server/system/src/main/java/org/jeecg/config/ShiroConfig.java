@@ -71,7 +71,7 @@ public class ShiroConfig {
 		filterChainDefinitionMap.put("/bigscreen/**", "anon");
 
 
-		//filterChainDefinitionMap.put("/iov/**", "anon");
+		filterChainDefinitionMap.put("/iov/**", "anon");
 
 		//cas验证登录
 		filterChainDefinitionMap.put("/cas/client/validateLogin", "anon");

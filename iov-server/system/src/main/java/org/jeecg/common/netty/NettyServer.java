@@ -22,6 +22,7 @@ public class NettyServer  implements CommandLineRunner {
     private NettyDataEngine nettyDataEngine;
 
     public void start() {
+        //开启http服务
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         ServerBootstrap bootstrap = new ServerBootstrap();
@@ -30,7 +31,7 @@ public class NettyServer  implements CommandLineRunner {
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     public void initChannel(SocketChannel socketChannel) throws Exception {
-                        socketChannel.pipeline().addLast(new NettyHandle(nettyDataEngine));
+                        socketChannel.pipeline().addLast(new NettyHandle(nettyDataEngine));//处理连接
                     }
                 });
         try {
@@ -44,7 +45,7 @@ public class NettyServer  implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) throws Exception { //http服务启动
         this.start();
         System.out.println("netty启动，监听端口："+this.port);
     }

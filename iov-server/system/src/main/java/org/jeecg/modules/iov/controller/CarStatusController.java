@@ -60,7 +60,7 @@ public class CarStatusController extends JeecgController<CarStatus, ICarStatusSe
 	 * @return
 	 */
 	@GetMapping(value = "/list")
-	@PermissionData(pageComponent="modules/iov/CarStatusList")
+	//@PermissionData(pageComponent="modules/iov/CarStatusList")
 	public Result<?> queryPageList(CarStatus carStatus,
 								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
 								   @RequestParam(name="pageSize", defaultValue="10") Integer pageSize,
