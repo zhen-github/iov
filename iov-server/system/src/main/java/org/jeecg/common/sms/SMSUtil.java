@@ -28,8 +28,13 @@ public class SMSUtil {
     @Value("${sms.key}")
     String key;
 
-    CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+    CloseableHttpClient httpClient = HttpClientBuilder.create().build();  //
 
+    /**
+     * 发送短信
+     * @param smsMob 手机号
+     * @param smsText 信息内容
+     */
     public void send(String smsMob, String smsText) {
         HttpPost httppost = new HttpPost(url);
         List<NameValuePair> formparams = new ArrayList<NameValuePair>();
