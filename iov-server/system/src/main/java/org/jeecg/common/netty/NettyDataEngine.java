@@ -171,8 +171,6 @@ public class NettyDataEngine {
                     carStatus.setCatalyzerTemTwoTwo(Double.valueOf(m[1].replace(" ", "")));
                     carStatusLog.setCatalyzerTemTwoTwo(Double.valueOf(m[1].replace(" ", "")));
                     break;
-
-
                 case "DS147":
                     carStatus.setEngineOilTemperature(Double.valueOf(m[1].replace(" ", "")));
                     carStatusLog.setEngineOilTemperature(Double.valueOf(m[1].replace(" ", "")));
@@ -189,6 +187,11 @@ public class NettyDataEngine {
                     break;
                 case "Mag":
                     break;
+                case "mileage":
+                    carStatus.setMileage(m[1]);
+                    carStatusLog.setMileage(m[1]);
+                    break;
+
             }
         }
         car.setMac("D8CB8A828D3D");//设定唯一标识 测试时写死了  后续多台机器可根据该字段区分机器

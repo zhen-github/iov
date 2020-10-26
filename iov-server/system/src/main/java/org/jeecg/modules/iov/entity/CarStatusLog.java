@@ -82,6 +82,8 @@ public class CarStatusLog implements Serializable {
 	/**故障*/
 	@Excel(name = "故障", width = 15)
     private java.lang.String breakdown;
+	@Excel(name = "里程", width = 15)
+	private java.lang.String mileage;
 	/**催化剂温度(缸组1,传感器1) */
 	@Excel(name = "催化剂温度(缸组1,传感器1) ", width = 15)
     private java.lang.Double catalyzerTemOneOne;

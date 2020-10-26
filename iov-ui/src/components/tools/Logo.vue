@@ -21,7 +21,7 @@
     props: {
       title: {
         type: String,
-        default: '车联网',
+        default: '智能车联网平台',
         required: false
       },
       showTitle: {

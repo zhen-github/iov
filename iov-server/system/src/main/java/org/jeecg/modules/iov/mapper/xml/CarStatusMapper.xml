@@ -40,7 +40,8 @@
         a.ltfc_one as ltfcOne,
         a.stfc_two as stfcTwo,
         a.ltfc_two as ltfcTwo,
-        b.car_number as "car.carNumber"
+        b.car_number as "car.carNumber",
+        a.mileage AS "mileage"
         FROM iov_car_status a LEFT JOIN iov_car b on a.car_id=b.id
         <if test="ew.emptyOfWhere == false">
             WHERE
@@ -84,7 +85,8 @@
             stfc_one,
             ltfc_one,
             stfc_two,
-            ltfc_two
+            ltfc_two,
+            mileage
 		) VALUES (
 			#{id},
 			#{createBy},
@@ -119,7 +121,8 @@
 			#{stfcOne},
 			#{ltfcOne},
 			#{stfcTwo},
-			#{ltfcTwo}
+			#{ltfcTwo},
+			#{mileage}
 		)
     </insert>
 
@@ -207,7 +210,9 @@
         <if test="ltfcTwo!=null">,
             ltfc_two=#{ltfcTwo}
         </if>
-
+        <if test="ltfcTwo!=null">,
+            mileage=#{mileage}
+        </if>
         where
         car_id=(SELECT id FROM iov_car WHERE mac=#{car.mac});
     </update>

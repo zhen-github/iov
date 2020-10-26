@@ -1,7 +1,0 @@
-org.jeecg.modules.iov  -----具体功能
-org.jeecg.common  -----------通信模块 、短信发送
-
-org.jeecg.JeecgApplication   -----------启动类      直接运行该类即可运行项目
-
-
-application-dev.yml  ------------配置文件 mysql redis等配置在此配置

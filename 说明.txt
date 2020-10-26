@@ -1,3 +1,0 @@
-iov-server ----后台项目 java 8
-iov-ui   --------前端项目  vue
-iov.sql  ---------为数据库文件 ，mysql 5.7 

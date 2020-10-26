@@ -5,7 +5,7 @@
         <div class="header">
           <a href="/">
             <img src="~@/assets/logo.svg" class="logo" alt="logo">
-            <span class="title">智能车联网</span>
+            <span class="title">智能车联网平台</span>
           </a>
         </div>
         <div class="desc">
